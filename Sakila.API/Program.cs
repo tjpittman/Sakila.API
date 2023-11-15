@@ -23,10 +23,6 @@ builder.Services.AddTransient<IFilmRepository, FilmRepository>();
 
 var app = builder.Build();
 
-//mySql username/password
-//un: sakila_testdev
-//pw: sakila_testdev_password
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
