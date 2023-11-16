@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Sakila.Core.Inventory.Movies.Models
+namespace Sakila.Core.Movies.Models
 {
     public class Language
     {
@@ -15,6 +10,6 @@ namespace Sakila.Core.Inventory.Movies.Models
         [Column("name")]
         public string Name { get; set; }
         [Column("last_update")]
-        public DateTime LastUpdate { get; set; }\
+        public DateTime LastUpdate { get; set; }
     }
 }

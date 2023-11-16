@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Sakila.Core.Inventory.Movies.Interfaces;
+using Sakila.Core.Movies.Interfaces;
 using Sakila.Infrastructure.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);

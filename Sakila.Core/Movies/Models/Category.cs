@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sakila.Core.Inventory.Movies.Models
+namespace Sakila.Core.Movies.Models
 {
     public class Category
     {
-        [Key,Column("category_id")] 
+        [Key, Column("category_id")]
         public int CategoryId { get; set; }
 
-        [Column("name")] 
+        [Column("name")]
         public string Name { get; set; }
 
-        [Column("last_update")] 
+        [Column("last_update")]
         public DateTime LastUpdate { get; set; }
     }
 }

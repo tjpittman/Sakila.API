@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sakila.Core.Inventory.Movies.Interfaces;
-using Sakila.Core.Inventory.Movies.Models;
+using Sakila.Core.Movies.Interfaces;
+using Sakila.Core.Movies.Models;
 
 namespace Sakila.API.Controllers.Movies
 {

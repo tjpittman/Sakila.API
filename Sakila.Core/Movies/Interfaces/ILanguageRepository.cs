@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Sakila.Core.Movies.Models;
 
-using Sakila.Core.Inventory.Movies.Models;
-
-namespace Sakila.Core.Inventory.Movies.Interfaces
+namespace Sakila.Core.Movies.Interfaces
 {
     public interface ILanguageRepository
     {
@@ -14,6 +8,6 @@ namespace Sakila.Core.Inventory.Movies.Interfaces
         public Task<IEnumerable<Language>> GetAllLanguagesAsync();
         public Task<Language> GetLanguageByLanguageIdAsync(int languageId);
         public Task<int> UpdateLanguage(Language language);
-        public Task<int> DeleteLanguageAsync(Language language);
+        public Task<int> DeleteLanguageAsync(Language language);//TODO: change to go by id field
     }
 }

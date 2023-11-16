@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using Sakila.Core.Inventory.Movies.Interfaces;
-using Sakila.Core.Inventory.Movies.Models;
+using Sakila.Core.Movies.Interfaces;
+using Sakila.Core.Movies.Models;
 
 namespace Sakila.Infrastructure.DataAccess
 {
-    public class FilmCategoryRepository : IFilmCategory
+    public class FilmCategoryRepository : IFilmCategoryRepository
     {
         private readonly MySqlContext _mySqlContext;
 

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Sakila.Core.Inventory.Movies.Interfaces;
-using Sakila.Core.Inventory.Movies.Models;
+using Sakila.Core.Movies.Interfaces;
+using Sakila.Core.Movies.Models;
 
 namespace Sakila.Infrastructure.DataAccess
 {
@@ -24,9 +24,7 @@ namespace Sakila.Infrastructure.DataAccess
         }
         public async Task<Film?> GetFilmByFilmIdAsync(int filmId)
         {
-            var film = await _mySqlContext.Film.Where(f => f.FilmId == filmId).FirstOrDefaultAsync();
-            
-            return film;
+            return await _mySqlContext.Film.FindAsync(filmId);
         }
 
         public async Task<int> AddFilmAsync(Film film)

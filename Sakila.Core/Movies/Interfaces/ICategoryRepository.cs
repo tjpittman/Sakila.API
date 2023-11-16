@@ -1,6 +1,6 @@
-﻿using Sakila.Core.Inventory.Movies.Models;
+﻿using Sakila.Core.Movies.Models;
 
-namespace Sakila.Core.Inventory.Movies.Interfaces
+namespace Sakila.Core.Movies.Interfaces
 {
     public interface ICategoryRepository
     {
@@ -9,6 +9,6 @@ namespace Sakila.Core.Inventory.Movies.Interfaces
         public Task<int> AddNewCategoryAsync(Category category);
 
         public Task<int> UpdateCategoryAsync(Category category);
-        public Task<int> DeleteCategoryAsync(Category category);
+        public Task<int> DeleteCategoryAsync(Category category);//TODO: change to go by id field
     }
 }

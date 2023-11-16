@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using Sakila.Core.Inventory.Movies.Interfaces;
-using Sakila.Core.Inventory.Movies.Models;
+using Sakila.Core.Movies.Interfaces;
+using Sakila.Core.Movies.Models;
 
 namespace Sakila.Infrastructure.DataAccess
 {
@@ -28,7 +27,7 @@ namespace Sakila.Infrastructure.DataAccess
         }
         public async Task<Category?> GetCategoryByCategoryIdAsync(int categoryId)
         {
-            return await _mySqlContext.Category.Where(c => c.CategoryId == categoryId).FirstOrDefaultAsync();
+            return await _mySqlContext.Category.FindAsync(categoryId);
         }
         
         public async Task<int> UpdateCategoryAsync(Category category)
