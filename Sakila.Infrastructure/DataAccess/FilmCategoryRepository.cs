@@ -27,9 +27,7 @@ namespace Sakila.Infrastructure.DataAccess
         }
         public async Task<FilmCategory?> GetFilmCategoryByFilmIdCategoryIdAsync(int filmId, int categoryId)
         {
-            return await _mySqlContext.FilmCategory.Where(fc => 
-                                                          fc.FilmId == filmId && 
-                                                          fc.CategoryId == categoryId).FirstOrDefaultAsync();
+            return await _mySqlContext.FilmCategory.FindAsync(filmId, categoryId);
         }
 
         public async Task<int> UpdateFilmCategoryAsync(FilmCategory filmCategory)
