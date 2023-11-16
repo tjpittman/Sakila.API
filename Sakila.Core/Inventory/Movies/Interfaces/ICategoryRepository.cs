@@ -9,7 +9,6 @@ namespace Sakila.Core.Inventory.Movies.Interfaces
         public Task<int> AddNewCategoryAsync(Category category);
 
         public Task<int> UpdateCategoryAsync(Category category);
-        public Task<int> DeleteCategoryByCategoryIdAsync(int categoryId);
         public Task<int> DeleteCategoryAsync(Category category);
     }
 }

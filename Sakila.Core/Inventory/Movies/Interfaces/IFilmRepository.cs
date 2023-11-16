@@ -15,8 +15,7 @@ namespace Sakila.Core.Inventory.Movies.Interfaces
         public Task<Film?> GetFilmByFilmIdAsync(int filmId);
         public Task<int> AddFilmAsync(Film film);
         public Task<int> UpdateFilmAsync(Film film);
-        public Task<int> DeleteFilmByFilmIdAsync(int filmId);
-        public Task<int> DeleteFilm(Film film);
+        public Task<int> DeleteFilmAsync(Film film);
 
     }
 }

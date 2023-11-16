@@ -39,15 +39,6 @@ namespace Sakila.Infrastructure.DataAccess
             return await _mySqlContext.SaveChangesAsync();
         }
         
-        public async Task<int> DeleteFilmCategoryByFilmIdCategoryIdAsync(int filmId, int categoryId)
-        {
-            var filmCategory = await GetFilmCategoryByFilmIdCategoryIdAsync(filmId, categoryId);
-
-            if (filmCategory == null)
-                return 0;
-
-            return await DeleteFilmCategoryAsync(filmCategory);
-        }
         public async Task<int> DeleteFilmCategoryAsync(FilmCategory filmCategory)
         {
             _mySqlContext.FilmCategory.Remove(filmCategory);

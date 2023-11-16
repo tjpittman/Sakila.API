@@ -24,7 +24,9 @@ namespace Sakila.Infrastructure.DataAccess
         }
         public async Task<Film?> GetFilmByFilmIdAsync(int filmId)
         {
-            return await _mySqlContext.Film.Where(f => f.FilmId == filmId).FirstOrDefaultAsync();
+            var film = await _mySqlContext.Film.Where(f => f.FilmId == filmId).FirstOrDefaultAsync();
+            
+            return film;
         }
 
         public async Task<int> AddFilmAsync(Film film)
@@ -40,17 +42,8 @@ namespace Sakila.Infrastructure.DataAccess
 
             return await _mySqlContext.SaveChangesAsync();
         }
-
-        public async Task<int> DeleteFilmByFilmIdAsync(int filmId)
-        {
-            var film = await GetFilmByFilmIdAsync(filmId);
-
-            if (film == null)
-                return 0;
-
-            return await DeleteFilm(film);
-        }
-        public async Task<int> DeleteFilm(Film film)
+        
+        public async Task<int> DeleteFilmAsync(Film film)
         {
             _mySqlContext.Film.Remove(film);
 

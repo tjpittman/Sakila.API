@@ -2,22 +2,23 @@
 using Sakila.Core.Inventory.Movies.Interfaces;
 using Sakila.Core.Inventory.Movies.Models;
 
-namespace Sakila.API.Controllers
+namespace Sakila.API.Controllers.Movies
 {
-    [Route("silka/[controller]")]
+    [Route("[controller]/")]
     [ApiController]
-    public class MovieController : ControllerBase
-    { 
+    public class FilmsController : ControllerBase
+    {
         private readonly IFilmRepository _filmRepository;
 
-        public MovieController( IFilmRepository filmRepository)
-        { 
+        public FilmsController(IFilmRepository filmRepository)
+        {
             _filmRepository = filmRepository;
         }
 
-        [HttpPost]
-        [Route("~/Film/AddFilm")]
-        public async Task<IActionResult> AddFilmAsync(Film film)
+        #region Film
+
+        [HttpPost("add-film")]
+        public async Task<IActionResult> AddFilmAsync([FromBody]Film film)
         {
             try
             {
@@ -34,8 +35,7 @@ namespace Sakila.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("~/Film/GetAllFilms")]
+        [HttpGet("get-all-films")]
         public async Task<IActionResult> GetFilmsAsync()
         {
             try
@@ -52,8 +52,7 @@ namespace Sakila.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("~/Film/GetFilm/{filmId}")]
+        [HttpGet("get-film/{filmId}")]
         public async Task<IActionResult> GetFilmsByFilmIdAsync(int filmId)
         {
             try
@@ -73,22 +72,34 @@ namespace Sakila.API.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("~/Film/DeleteFilm/{filmId}")]
-        public async Task<IActionResult> DeleteFilmByFilmIdAsync(int filmId)
+        [HttpDelete("delete-film")]
+        public async Task<IActionResult> DeleteFilmByFilmIdAsync([FromBody] Film film)
         {
             try
             {
-                return Ok(await _filmRepository.DeleteFilmByFilmIdAsync(filmId));
+                return Ok(await _filmRepository.DeleteFilmAsync(film));
             }
             catch (Exception e)
             {
                 return BadRequest(e);
             }
         }
-        
-        [HttpPut]
-        [Route("~/Film/Update/")]
+        [HttpDelete("delete-film/{filmId}")]
+        public async Task<IActionResult> DeleteFilmByFilmIdAsync(int filmId)
+        {
+            try
+            {
+                var film = await _filmRepository.GetFilmByFilmIdAsync(filmId);
+
+                return Ok(await _filmRepository.DeleteFilmAsync(film));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPut("update-film")]
         public async Task<IActionResult> UpdateFilmAsync(Film film)
         {
             try
@@ -100,6 +111,8 @@ namespace Sakila.API.Controllers
                 return BadRequest(e);
             }
         }
+        #endregion
+
 
 
     }

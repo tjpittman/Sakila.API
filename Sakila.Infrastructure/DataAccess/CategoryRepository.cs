@@ -37,17 +37,7 @@ namespace Sakila.Infrastructure.DataAccess
 
             return await _mySqlContext.SaveChangesAsync();
         }
-
-        public async Task<int> DeleteCategoryByCategoryIdAsync(int categoryId)
-        {
-            var category = await GetCategoryByCategoryIdAsync(categoryId);
-
-            if (category == null)
-                return 0;
-
-            return await DeleteCategoryAsync(category);
-        }
-
+        
         public async Task<int> DeleteCategoryAsync(Category category)
         {
             _mySqlContext.Category.Remove(category);
