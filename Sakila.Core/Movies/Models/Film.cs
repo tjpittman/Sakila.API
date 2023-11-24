@@ -6,7 +6,7 @@ namespace Sakila.Core.Movies.Models
 {
     public class Film
     {
-        [Key, Column("film_id")]
+        [Column("film_id")]
         public int FilmId { get; set; }
 
         [Column("title")]
@@ -42,7 +42,8 @@ namespace Sakila.Core.Movies.Models
         [Column("special_features")]
         public string? SpecialFeatures { get; set; }
 
-        [Column("last_update")] public DateTime LastUpdate { get; set; }
+        [Column("last_update")] 
+        public DateTime LastUpdate { get; set; }
     }
 
 }

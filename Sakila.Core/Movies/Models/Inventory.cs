@@ -5,7 +5,7 @@ namespace Sakila.Core.Movies.Models
 {
     public class Inventory
     {
-        [Key, Column("inventory_id")]
+        [Column("inventory_id")]
         public int InventoryId { get; set; }
         [Column("film_id")]
         public int FilmId { get; set; }

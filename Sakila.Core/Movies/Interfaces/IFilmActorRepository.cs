@@ -4,10 +4,10 @@ namespace Sakila.Core.Movies.Interfaces
 {
     public interface IFilmActorRepository
     {
-        public Task<int> AddFilmActor(FilmActor filmActor);
-        public Task<IEnumerable<FilmActor>> GetAllFilmActors();
-        public Task<FilmActor> GetFilmActorByActorIdFilmId(int actorId, int filmId);
-        public Task<int> UpdateFilmActor(FilmActor filmActor);
-        public Task<int> DeleteFilmActor(int actorId, int filmId);
+        public Task<int> AddFilmActorAsync(FilmActor filmActor);
+        public Task<IEnumerable<FilmActor>> GetAllFilmActorsAsync();
+        public Task<FilmActor> GetFilmActorByActorIdFilmIdAsync(int actorId, int filmId);
+        public Task<int> UpdateFilmActorAsync(FilmActor filmActor);
+        public Task<int> DeleteFilmActorAsync(int actorId, int filmId);
     }
 }

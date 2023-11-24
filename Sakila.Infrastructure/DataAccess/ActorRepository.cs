@@ -13,33 +13,33 @@ namespace Sakila.Infrastructure.DataAccess
             _mySqlContext = mySqlContext;
         }
 
-        public async Task<int> AddActor(Actor actor)
+        public async Task<int> AddActorAsync(Actor actor)
         {
             await _mySqlContext.Actor.AddAsync(actor);
 
             return await _mySqlContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Actor>> GetAllActors()
+        public async Task<IEnumerable<Actor>> GetAllActorsAsync()
         {
             return await _mySqlContext.Actor.ToListAsync();
         }
 
-        public async Task<Actor> GetActorById(int actorId)
+        public async Task<Actor> GetActorByIdAsync(int actorId)
         {
             return await _mySqlContext.Actor.FindAsync(actorId);
         }
 
-        public async Task<int> UpdateActor(Actor actor)
+        public async Task<int> UpdateActorAsync(Actor actor)
         {
             _mySqlContext.Actor.Update(actor);
 
             return await _mySqlContext.SaveChangesAsync();
         }
 
-        public async Task<int> RemoveActorByActorId(int actorId)
+        public async Task<int> RemoveActorByActorIdAsync(int actorId)
         {
-            var actor = GetActorById(actorId);
+            var actor = GetActorByIdAsync(actorId);
 
             _mySqlContext.Remove(actor);
                 

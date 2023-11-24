@@ -17,31 +17,31 @@ namespace Sakila.Infrastructure.DataAccess
         {
             _mySqlContext = mySqlContext;
         }
-        public async Task<int> AddFilmActor(FilmActor filmActor)
+        public async Task<int> AddFilmActorAsync(FilmActor filmActor)
         {
             await _mySqlContext.AddAsync(filmActor);
             return await _mySqlContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<FilmActor>> GetAllFilmActors()
+        public async Task<IEnumerable<FilmActor>> GetAllFilmActorsAsync()
         {
             return await _mySqlContext.FilmActor.ToListAsync();
         }
 
-        public async Task<FilmActor> GetFilmActorByActorIdFilmId(int actorId, int filmId)
+        public async Task<FilmActor> GetFilmActorByActorIdFilmIdAsync(int actorId, int filmId)
         {
             return await _mySqlContext.FilmActor.FindAsync(actorId, filmId);
         }
 
-        public async Task<int> UpdateFilmActor(FilmActor filmActor)
+        public async Task<int> UpdateFilmActorAsync(FilmActor filmActor)
         {
             _mySqlContext.Update(filmActor);
             return await _mySqlContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteFilmActor(int actorId, int filmId)
+        public async Task<int> DeleteFilmActorAsync(int actorId, int filmId)
         {
-            var filmActor = await GetFilmActorByActorIdFilmId(actorId, filmId);
+            var filmActor = await GetFilmActorByActorIdFilmIdAsync(actorId, filmId);
             
             _mySqlContext.Remove(actorId);
 

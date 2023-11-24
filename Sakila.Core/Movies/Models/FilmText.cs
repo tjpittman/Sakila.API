@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sakila.Core.Movies.Models
 {
+    [Table("film_text")]
     public class FilmText
     {
-        [Key, Column("film_id")]
+        [Column("film_id")]
         public int FilmId { get; set; }
         [Column("title")]
         public string Title { get; set; }

@@ -1,16 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+ 
 
 namespace Sakila.Core.Movies.Models
 {
+    [Table("film_actor")]
     public class FilmActor
     {
-        [Key, Column("factor_id", Order = 0)]
+        [Column("actor_id")]
         public int ActorId { get; set; }
-        [Key, Column("film_id", Order = 1)]
+        [Column("film_id")]
         public int FilmId { get; set; }
         [Column("last_update")]
         public DateTime LastUpdate { get; set; }
-
     }
 }
