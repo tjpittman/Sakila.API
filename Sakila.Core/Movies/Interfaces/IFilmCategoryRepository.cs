@@ -9,6 +9,6 @@ namespace Sakila.Core.Movies.Interfaces
         public Task<FilmCategory?> GetFilmCategoryByFilmIdCategoryIdAsync(int filmId, int categoryId);
         public Task<int> AddFilmCategoryAsync(FilmCategory filmCategory);
         public Task<int> UpdateFilmCategoryAsync(FilmCategory filmCategory);
-        public Task<int> DeleteFilmCategoryAsync(FilmCategory filmCategory);//TODO: change to go by ID field.
+        public Task<int> DeleteFilmCategoryAsync(FilmCategory filmCategory);
     }
 }

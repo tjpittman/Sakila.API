@@ -9,11 +9,15 @@ namespace Sakila.API.Controllers
     public class FilmController : ControllerBase
     {
         private readonly IFilmRepository _filmRepository;
-        public FilmController(IFilmRepository filmRepository)
+        private readonly IFilmCategoryRepository _filmCategoryRepository;
+
+        public FilmController(IFilmRepository filmRepository, IFilmCategoryRepository filmCategoryRepository)
         {
             _filmRepository = filmRepository;
+            _filmCategoryRepository = filmCategoryRepository;
         }
-        
+
+        #region Film
         [HttpPost("add-film")]
         public async Task<IActionResult> AddFilmAsync([FromBody] Film film)
         {
@@ -68,25 +72,19 @@ namespace Sakila.API.Controllers
                 return BadRequest(e);
             }
         }
-
-        [HttpDelete("delete-film")]
-        public async Task<IActionResult> DeleteFilmByFilmIdAsync([FromBody] Film film)
-        {
-            try
-            {
-                return Ok(await _filmRepository.DeleteFilmAsync(film));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
-        }
+        
         [HttpDelete("delete-film/{filmId}")]
         public async Task<IActionResult> DeleteFilmByFilmIdAsync(int filmId)
         {
             try
             {
                 var film = await _filmRepository.GetFilmByFilmIdAsync(filmId);
+
+
+                //TODO: Create custom exceptions for handling this scenario 
+                //throw New FilmException("Film not found by FilmId"); or something...
+                if (film == null)
+                    return BadRequest(filmId);
 
                 return Ok(await _filmRepository.DeleteFilmAsync(film));
             }
@@ -108,6 +106,70 @@ namespace Sakila.API.Controllers
                 return BadRequest(e);
             }
         }
+        #endregion
+
+        #region FilmCategory
+        [HttpGet("categories/get-all-film-categories")]
+        public async Task<IActionResult> GetAllFilmCategories()
+        {
+            try
+            {
+                var filmCategories = await _filmCategoryRepository.GetFilmCategoriesAsync();
+
+                if (!filmCategories.Any())
+                    return NoContent();
+
+                return Ok(filmCategories);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("categories/add-new-film-category/{filmId}/{categoryId}")]
+        public async Task<IActionResult> AddNewFilmCategory(int filmId, int categoryId)
+        {
+            try
+            {
+                var filmCategory = new FilmCategory()
+                {
+                    FilmId = filmId,
+                    CategoryId = categoryId,
+                    LastUpdate = DateTime.Now
+                };
+
+                var result = await _filmCategoryRepository.AddFilmCategoryAsync(filmCategory);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpDelete("categories/delete-film-category/{filmId}/{categoryId}")]
+        public async Task<IActionResult> DeleteFilmCategory(int filmId, int categoryId)
+        {
+            try
+            {
+                var filmCategory = await _filmCategoryRepository.GetFilmCategoryByFilmIdCategoryIdAsync(filmId, categoryId);
+
+                //TODO: Create custom exceptions for handling this scenario  
+                if (filmCategory == null)
+                    return BadRequest();
+
+                var result = _filmCategoryRepository.DeleteFilmCategoryAsync(filmCategory);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        } 
+        #endregion
     }
 }
 
