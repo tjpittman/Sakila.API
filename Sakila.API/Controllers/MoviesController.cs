@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using Sakila.Core.Movies.DTOs;
 using Sakila.Core.Movies.Interfaces;
 using Sakila.Core.Movies.Models;
@@ -32,37 +33,20 @@ namespace Sakila.API.Controllers
         {
             try
             {
-                var allActors = await _actorRepository.GetAllActorsAsync();
-                var allCategories = await _categoryRepository.GetAllCategoriesAsync();
-                var allFilmActors = await _filmActorRepositroy.GetAllFilmActorsAsync();
-                var allFilmCategories = await _filmCategoryRepository.GetFilmCategoriesAsync();
                 var allFilms = await _filmRepository.GetAllFilmsAsync();
-                var allLanguages = await _languageRepository.GetAllLanguagesAsync();
 
                 var movieList = new List<MovieDTO>();
-
+                
                 foreach (var film in allFilms)
                 {            
-                    //Because of the relational table film_category between film and category,
-                    //we do a little filtering to get only the categories 
-                     
-                    var categoryIds = allFilmCategories.Where(fc => fc.FilmId == film.FilmId).Select(c => c.CategoryId);
-                    var filmCategories= allCategories.Where(c => categoryIds.Contains(c.CategoryId)).ToList();
-
-                    var categoryList = new List<CategoryDTO>();
-
-                    filmCategories.ForEach(c => categoryList.Add(new CategoryDTO { Name = c.Name }));
-
-                    //filter actors same as we do categories
-                    var actorIds = allFilmActors.Where(fa => fa.FilmId == film.FilmId).Select(a => a.ActorId);
-                    var actors = allActors.Where(a => actorIds.Contains(a.ActorId)).ToList();
-
-                    var actorList = new List<ActorDTO>();
-
-                    actors.ForEach(a => actorList.Add(new() { FirstName = a.FirstName, LastName = a.LastName }));
-                     
+                    var filmCategoriesList = await _filmCategoryRepository.GetFilmCategoriesByFilmIdAsync(film.FilmId);
                     
-                    movieList.Add(MapMovieDTO(film, actorList, categoryList, allLanguages));                    
+                    var categoryList = await MapCategoryDtoList(filmCategoriesList);
+
+                    var filmActorList = await _filmActorRepositroy.GetFilmActorByFilmIdAsync(film.FilmId);
+                    var actorList = await MapActorDtoList(filmActorList);
+                    
+                    movieList.Add(await MapMovieDTO(film, actorList, categoryList));                    
                 }
 
                 return Ok(movieList);
@@ -71,19 +55,48 @@ namespace Sakila.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
         }
 
-        private MovieDTO MapMovieDTO(Film film, IEnumerable<ActorDTO> actors, IEnumerable<CategoryDTO> categories,  IEnumerable<Language> languages)
+        [HttpGet("get-movie/{filmId}")]
+        public async Task<IActionResult> GetMovieByFilmId(int filmId)
         {
+            try
+            {
+                var film = await _filmRepository.GetFilmByFilmIdAsync(filmId);
+
+                if (film == null)
+                    return NotFound(filmId);
+
+                var filmCategories = (await _filmCategoryRepository.GetFilmCategoriesByFilmIdAsync(filmId)).ToList();
+                
+                var filmActors = await _filmActorRepositroy.GetFilmActorByFilmIdAsync(filmId);
+
+                var allActors = await MapActorDtoList(filmActors);
+                var allCategories = await MapCategoryDtoList(filmCategories);
+
+                var movieDto = await MapMovieDTO(film, allActors, allCategories);
+
+                return Ok(movieDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        private async Task<MovieDTO> MapMovieDTO(Film film, IEnumerable<ActorDTO> actors, IEnumerable<CategoryDTO> categories)
+        {
+            var language = await _languageRepository.GetLanguageByLanguageIdAsync(film.LanguageId);
+
+            var originalLanguage = await _languageRepository.GetLanguageByLanguageIdAsync(film.OriginalLanguageId);
+
             var movie = new MovieDTO
             {
                 Title = film.Title,
                 Description = film.Description,
                 ReleaseYear = film.ReleaseYear,
-                Language = languages == default ? string.Empty : languages.FirstOrDefault(l => l.LanguageId == film.LanguageId).Name,
-                OriginalLanguage = languages == default ? string.Empty : languages.FirstOrDefault(l => l.LanguageId == film.OriginalLanguageId)?.Name,
+                Language = language.Name,
+                OriginalLanguage = originalLanguage?.Name,
                 RentalDuration = film.RentalDuration,
                 RentalRate = film.RentalRate,
                 Length = film.Length,
@@ -92,8 +105,36 @@ namespace Sakila.API.Controllers
                 Actors = actors,
                 Categories = categories
             };
-
+            
             return movie;
+        }
+        
+        private async Task<IEnumerable<CategoryDTO>> MapCategoryDtoList(List<FilmCategory> filmCategories)
+        {
+            var allCategoryDTOs = new List<CategoryDTO>();
+             
+            foreach (var fc in filmCategories)
+            {
+                var category = await _categoryRepository.GetCategoryByCategoryIdAsync(fc.CategoryId);
+
+                allCategoryDTOs.Add(new() {Name = category.Name});
+            }
+
+            return allCategoryDTOs.AsEnumerable();
+        }
+
+        private async Task<IEnumerable<ActorDTO>> MapActorDtoList(List<FilmActor> filmActors)
+        {
+            var allActorDTOs = new List<ActorDTO>();
+
+            foreach (var fa in filmActors)
+            {
+                var actor = await _actorRepository.GetActorByIdAsync(fa.ActorId);
+
+                allActorDTOs.Add(new() { FirstName = actor.FirstName, LastName = actor.LastName });
+            }
+
+            return allActorDTOs.AsEnumerable();
         }
 
         #region Film
@@ -193,6 +234,5 @@ namespace Sakila.API.Controllers
             }
         }
         #endregion
-
     }
 }

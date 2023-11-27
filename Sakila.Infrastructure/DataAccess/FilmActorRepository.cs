@@ -27,6 +27,15 @@ namespace Sakila.Infrastructure.DataAccess
         {
             return await _mySqlContext.FilmActor.ToListAsync();
         }
+        public async Task<List<FilmActor>> GetFilmActorByFilmIdAsync(int filmId)
+        {
+            return await _mySqlContext.FilmActor.Where(fa => fa.FilmId == filmId).ToListAsync();
+        }
+
+        public async Task<List<FilmActor>> GetFilmActorByActorIdAsync(int actorId)
+        {
+            return await _mySqlContext.FilmActor.Where(fa => fa.ActorId == actorId).ToListAsync();
+        }
 
         public async Task<FilmActor> GetFilmActorByActorIdFilmIdAsync(int actorId, int filmId)
         {
@@ -47,5 +56,6 @@ namespace Sakila.Infrastructure.DataAccess
 
             return await _mySqlContext.SaveChangesAsync();
         }
+
     }
 }

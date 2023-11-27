@@ -25,7 +25,7 @@ namespace Sakila.Infrastructure.DataAccess
         {
             return await _mySqlContext.Category.ToListAsync();
         }
-        public async Task<Category?> GetCategoryByCategoryIdAsync(int categoryId)
+        public async Task<Category> GetCategoryByCategoryIdAsync(int categoryId)
         {
             return await _mySqlContext.Category.FindAsync(categoryId);
         }

@@ -5,7 +5,7 @@ namespace Sakila.Core.Movies.Interfaces
     public interface ICategoryRepository
     {
         public Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        public Task<Category?> GetCategoryByCategoryIdAsync(int categoryId);
+        public Task<Category> GetCategoryByCategoryIdAsync(int categoryId);
         public Task<int> AddNewCategoryAsync(Category category);
 
         public Task<int> UpdateCategoryAsync(Category category);
