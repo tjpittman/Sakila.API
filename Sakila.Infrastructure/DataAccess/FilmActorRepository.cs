@@ -13,10 +13,12 @@ namespace Sakila.Infrastructure.DataAccess
     public class FilmActorRepository : IFilmActorRepository
     {
         private readonly MySqlContext _mySqlContext;
+
         public FilmActorRepository(MySqlContext mySqlContext)
         {
             _mySqlContext = mySqlContext;
         }
+
         public async Task<int> AddFilmActorAsync(FilmActor filmActor)
         {
             await _mySqlContext.AddAsync(filmActor);
@@ -27,12 +29,11 @@ namespace Sakila.Infrastructure.DataAccess
         {
             return await _mySqlContext.FilmActor.ToListAsync();
         }
-        public async Task<List<FilmActor>> GetFilmActorByFilmIdAsync(int filmId)
+        public async Task<IEnumerable<FilmActor>> GetFilmActorsByFilmIdAsync(int filmId)
         {
             return await _mySqlContext.FilmActor.Where(fa => fa.FilmId == filmId).ToListAsync();
         }
-
-        public async Task<List<FilmActor>> GetFilmActorByActorIdAsync(int actorId)
+        public async Task<IEnumerable<FilmActor>> GetFilmActorsByActorIdAsync(int actorId)
         {
             return await _mySqlContext.FilmActor.Where(fa => fa.ActorId == actorId).ToListAsync();
         }
@@ -48,14 +49,11 @@ namespace Sakila.Infrastructure.DataAccess
             return await _mySqlContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteFilmActorAsync(int actorId, int filmId)
-        {
-            var filmActor = await GetFilmActorByActorIdFilmIdAsync(actorId, filmId);
-            
-            _mySqlContext.Remove(actorId);
+        public async Task<int> DeleteFilmActorAsync(FilmActor filmActor)
+        { 
+            _mySqlContext.FilmActor.Remove(filmActor);
 
             return await _mySqlContext.SaveChangesAsync();
-        }
-
+        } 
     }
 }

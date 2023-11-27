@@ -24,12 +24,14 @@ namespace Sakila.Infrastructure.DataAccess
         {
             return await _mySqlContext.FilmCategory.ToListAsync();
         }
-
         public async Task<List<FilmCategory>> GetFilmCategoriesByFilmIdAsync(int filmId)
         {
             return await _mySqlContext.FilmCategory.Where(fc => fc.FilmId == filmId).ToListAsync();
         }
-
+        public async Task<List<FilmCategory>> GetFilmCategoriesByCategoryIdAsync(int categoryId)
+        {
+            return await _mySqlContext.FilmCategory.Where(fc => fc.CategoryId == categoryId).ToListAsync();
+        }
         public async Task<FilmCategory?> GetFilmCategoryByFilmIdCategoryIdAsync(int filmId, int categoryId)
         {
             return await _mySqlContext.FilmCategory.FindAsync(filmId, categoryId);

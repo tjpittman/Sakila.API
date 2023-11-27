@@ -127,6 +127,36 @@ namespace Sakila.API.Controllers
             }
         }
 
+        [HttpGet("categories/get-film-categories/film-id/{filmId}")]
+        public async Task<IActionResult> GetFilmCategoriesByFilmId(int filmId)
+        {
+            try
+            {
+                var result = await _filmCategoryRepository.GetFilmCategoriesByFilmIdAsync(filmId);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+        }
+        [HttpGet("categories/get-film-categories/category-id/{categoryId}")]
+        public async Task<IActionResult> GetFilmCategoriesByCategoryId(int categoryId)
+        {
+            try
+            {
+                var result = await _filmCategoryRepository.GetFilmCategoriesByCategoryIdAsync(categoryId);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+        }
         [HttpPost("categories/add-new-film-category/{filmId}/{categoryId}")]
         public async Task<IActionResult> AddNewFilmCategory(int filmId, int categoryId)
         {
@@ -160,7 +190,7 @@ namespace Sakila.API.Controllers
                 if (filmCategory == null)
                     return BadRequest();
 
-                var result = _filmCategoryRepository.DeleteFilmCategoryAsync(filmCategory);
+                var result = await _filmCategoryRepository.DeleteFilmCategoryAsync(filmCategory);
 
                 return Ok(result);
             }
@@ -168,8 +198,9 @@ namespace Sakila.API.Controllers
             {
                 return BadRequest(e);
             }
-        } 
-        #endregion
+        }
+        #endregion 
+
     }
 }
 
