@@ -1,9 +1,9 @@
 ﻿namespace Sakila.Core.Movies.DTOs
 {
-    public class CategoryDTO
+    public class LanguageDTO
     {
+        public int FilmId { get; set; }
         public int CategoryId { get; set; }
-        public string Name { get; set; }
         public DateTime LastUpdate { get; set; }
     }
 }
