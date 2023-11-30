@@ -8,6 +8,6 @@ namespace Sakila.Core.Movies.Interfaces
         public Task<IEnumerable<Actor>> GetAllActorsAsync();
         public Task<Actor> GetActorByIdAsync(int actorId);
         public Task<int> UpdateActorAsync(Actor actor);
-        public Task<int> RemoveActorByActorIdAsync(int actorId);
+        public Task<int> DeleteActor(Actor actor);
     }
 }

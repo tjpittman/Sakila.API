@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-using AutoMapper;
+﻿using AutoMapper;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -117,7 +115,6 @@ namespace Sakila.API.Controllers
             
             return movie;
         }
-        
         private async Task<IEnumerable<CategoryDTO>> MapCategoryDtoList(List<FilmCategory> filmCategories)
         {
             var allCategoryDTOs = new List<CategoryDTO>();
@@ -131,7 +128,6 @@ namespace Sakila.API.Controllers
 
             return allCategoryDTOs.AsEnumerable();
         }
-
         private async Task<IEnumerable<ActorDTO>> MapActorDtoList(List<FilmActor> filmActors)
         {
             var allActorDTOs = new List<ActorDTO>();
@@ -146,10 +142,83 @@ namespace Sakila.API.Controllers
             return allActorDTOs.AsEnumerable();
         }
 
+
+        private Actor MapActor(ActorDTO actorDto) => _mapper.Map<ActorDTO, Actor>(actorDto);
         private Film MapFilm(FilmDTO filmDto) => _mapper.Map<FilmDTO, Film>(filmDto);
         private FilmActor MapFilmActor(FilmActorDTO filmActorDto) => _mapper.Map<FilmActorDTO, FilmActor>(filmActorDto);
-        private FilmCategory MapFilmCategfory(FilmCategoryDTO filmCategoryDto) =>  _mapper.Map<FilmCategoryDTO, FilmCategory>(filmCategoryDto);
+        private FilmCategory MapFilmCategory(FilmCategoryDTO filmCategoryDto) =>  _mapper.Map<FilmCategoryDTO, FilmCategory>(filmCategoryDto);
+        private Category MapCategory(CategoryDTO categoryDto) => _mapper.Map<CategoryDTO, Category>(categoryDto);
         #endregion
+
+        #region Actor
+
+        [HttpGet("actor/get-all-actors")]
+        public async Task<ActionResult<IEnumerable<ActorDTO>>> GetAllActors()
+        {
+            try
+            {
+                var actors = await _actorRepository.GetAllActorsAsync();
+
+                return Ok(actors);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost("actor/add-new-actor")]
+        public async Task<IActionResult> AddNewActor([FromBody] ActorDTO actorDto)
+        {
+            try
+            {
+                var actor = MapActor(actorDto);
+
+                var result = await _actorRepository.AddActorAsync(actor);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        [HttpPut("actor/update-actor")]
+        public async Task<IActionResult> UpdateActor([FromBody] ActorDTO actorDto)
+        {
+            try
+            {
+                var actor = MapActor(actorDto);
+
+                var result = await _actorRepository.UpdateActorAsync(actor);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        [HttpPut("actor/delete-actor")]
+        public async Task<IActionResult> DeleteActor([FromBody] ActorDTO actorDto)
+        {
+            try
+            {
+                var actor = MapActor(actorDto);
+
+                var result = await _actorRepository.DeleteActor(actor);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        #endregion  
 
         #region Film
         [HttpPost("film/add-film")]
@@ -296,7 +365,7 @@ namespace Sakila.API.Controllers
         {
             try
             {
-                var filmCategory = MapFilmCategfory(filmCategoryDto);
+                var filmCategory = MapFilmCategory(filmCategoryDto);
 
                 var result = await _filmCategoryRepository.AddFilmCategoryAsync(filmCategory);
 
@@ -313,7 +382,7 @@ namespace Sakila.API.Controllers
         {
             try
             {
-                var filmCategory = MapFilmCategfory(filmCategoryDto);
+                var filmCategory = MapFilmCategory(filmCategoryDto);
 
                 var result = await _filmCategoryRepository.DeleteFilmCategoryAsync(filmCategory);
 
@@ -397,6 +466,77 @@ namespace Sakila.API.Controllers
 
 
         #endregion
+
+        #region Category
+
+        [HttpPost("categories/add-new-category")]
+        public async Task<IActionResult> AddNewCategory([FromBody] CategoryDTO categoryDto)
+        {
+            try
+            {
+                var category = MapCategory(categoryDto);
+
+                var result = await _categoryRepository.AddNewCategoryAsync(category);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("category/get-all-categories")]
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories()
+        {
+            try
+            {
+                var categories = await _categoryRepository.GetAllCategoriesAsync();
+
+                return Ok(categories);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        
+        [HttpPut("categories/update-category")]
+        public async Task<IActionResult> UpdateCategory([FromBody] CategoryDTO categoryDto)
+        {
+            try
+            {
+                var category = MapCategory(categoryDto);
+
+                var result = await _categoryRepository.UpdateCategoryAsync(category);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpDelete("categories/delete-category")]
+        public async Task<IActionResult> DeleteCategory([FromBody] CategoryDTO categoryDto)
+        {
+            try
+            {
+                var category = MapCategory(categoryDto);
+
+                var result = await _categoryRepository.DeleteCategoryAsync(category);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        #endregion
+
 
     }
 }

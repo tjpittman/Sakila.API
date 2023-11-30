@@ -37,11 +37,9 @@ namespace Sakila.Infrastructure.DataAccess
             return await _mySqlContext.SaveChangesAsync();
         }
 
-        public async Task<int> RemoveActorByActorIdAsync(int actorId)
-        {
-            var actor = GetActorByIdAsync(actorId);
-
-            _mySqlContext.Remove(actor);
+        public async Task<int> DeleteActor(Actor actor)
+        { 
+            _mySqlContext.Actor.Remove(actor);
                 
             return await _mySqlContext.SaveChangesAsync();
         }
