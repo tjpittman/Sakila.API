@@ -12,32 +12,35 @@ namespace Sakila.Infrastructure.DataAccess
         {
             _mySqlContext = mySqlContext;
         }
-        public async Task<int> AddInventory(Inventory inventory)
+
+        public async Task<int> AddInventoryAsync(Inventory inventory)
         {
             await _mySqlContext.Inventory.AddAsync(inventory);
             return await _mySqlContext.SaveChangesAsync();
         }
-
-        public async Task<IEnumerable<Inventory>> GetAllInventory()
+        public async Task<IEnumerable<Inventory>> GetAllInventoryAsync()
         {
             return await _mySqlContext.Inventory.ToListAsync();
         }
-
-        public async Task<Inventory> GetInventoryByInventoryId(int inventoryId)
+        public async Task<IEnumerable<Inventory>> GetAllInventoryByFilmIdAsync(int filmId)
+        {
+            return await _mySqlContext.Inventory.Where(i => i.FilmId == filmId).ToListAsync();
+        }
+        public async Task<IEnumerable<Inventory>> GetAllInventoryByStoreIdAsync(int storeId)
+        {
+            return await _mySqlContext.Inventory.Where(i => i.StoreId == storeId).ToListAsync();
+        }
+        public async Task<Inventory> GetInventoryByInventoryIdAsync(int inventoryId)
         {
             return await _mySqlContext.Inventory.FindAsync(inventoryId);
         }
-
-        public async Task<int> UpdateInventory(Inventory inventory)
+        public async Task<int> UpdateInventoryAsync(Inventory inventory)
         {
             _mySqlContext.Inventory.Update(inventory);
             return await _mySqlContext.SaveChangesAsync();
         }
-
-        public async Task<int> RemoveInventoryByInventoryId(int inventoryId)
+        public async Task<int> DeleteInventoryAsync(Inventory inventory)
         {
-            var inventory = await GetInventoryByInventoryId(inventoryId);
-
             _mySqlContext.Inventory.Remove(inventory);
 
             return await _mySqlContext.SaveChangesAsync();

@@ -1,12 +1,15 @@
-﻿namespace Sakila.Core.Movies.Interfaces
+﻿using Sakila.Core.Movies.Models;
+
+namespace Sakila.Core.Movies.Interfaces
 {
     public interface IInventoryRepository
     {
-        public Task<int> AddInventory(Models.Inventory inventory);
-        public Task<IEnumerable<Models.Inventory>> GetAllInventory();
-        public Task<Models.Inventory> GetInventoryByInventoryId(int inventoryId);
-        public Task<int> UpdateInventory(Models.Inventory inventory);
-        public Task<int> RemoveInventoryByInventoryId(int inventoryId);
-
+        public Task<int> AddInventoryAsync(Inventory inventory);
+        public Task<IEnumerable<Inventory>> GetAllInventoryAsync();
+        public Task<IEnumerable<Inventory>> GetAllInventoryByFilmIdAsync(int filmId);
+        public Task<IEnumerable<Inventory>> GetAllInventoryByStoreIdAsync(int storeId);
+        public Task<Inventory> GetInventoryByInventoryIdAsync(int inventoryId);
+        public Task<int> UpdateInventoryAsync(Inventory inventory);
+        public Task<int> DeleteInventoryAsync(Inventory inventory);
     }
 }

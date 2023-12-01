@@ -13,7 +13,7 @@ namespace Sakila.Infrastructure.DataAccess
             _mySqlContext = mySqlContext;
         }
 
-        public async Task<int> AddLanguage(Language language)
+        public async Task<int> AddLanguageAsync(Language language)
         {
             await _mySqlContext.Language.AddAsync(language);
             
@@ -30,7 +30,7 @@ namespace Sakila.Infrastructure.DataAccess
             return await _mySqlContext.Language.FindAsync(languageId);
         }
 
-        public async Task<int> UpdateLanguage(Language language)
+        public async Task<int> UpdateLanguageAsync(Language language)
         {
             _mySqlContext.Language.Update(language);
 
